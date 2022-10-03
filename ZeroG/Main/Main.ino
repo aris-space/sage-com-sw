@@ -19,6 +19,10 @@ int end_pos2 = 10;
 const int LED1 = 13;
 const int LED2 = 12;
 
+// OBC pins
+const int OBC1 = 29;
+const int OBC2 = 28;
+
 // Servo pins
 const int spin1 = 9;
 const int spin2 = 10;
@@ -55,6 +59,8 @@ void setup() {
   // initialize digital pins
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
+  pinMode(OBC1, OUTPUT);
+  pinMode(OBC2, OUTPUT);
   pinMode(btn_out, OUTPUT);
   pinMode(btn_1, INPUT_PULLDOWN);
   pinMode(btn_2, INPUT_PULLDOWN);
@@ -68,6 +74,8 @@ void setup() {
 
   servo1.write(init_pos1);
   servo2.write(init_pos2);
+  digitalWrite(OBC2, LOW);
+  digitalWrite(OBC1, LOW);
 }
 
 void loop() {
@@ -137,13 +145,19 @@ void run_measurement(int mech){
   Serial.println("1..");
   if (mech == 1){
     servo1.write(end_pos1);
+    digitalWrite(OBC1, HIGH);
+    digitalWrite(OBC2, LOW);
   }
   if (mech == 2){
     servo2.write(end_pos2);
+    digitalWrite(OBC2, HIGH);
+    digitalWrite(OBC1, LOW);
   }
   delay(2000);
   servo1.write(init_pos1);
   servo2.write(init_pos2);
+  digitalWrite(OBC2, LOW);
+  digitalWrite(OBC1, LOW);
   Serial.println("measurement done! :)");
 
 }
